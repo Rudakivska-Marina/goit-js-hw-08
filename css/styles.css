@@ -1,0 +1,17 @@
+ul {
+    list-style-type: none;
+}
+
+.gallery {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 24px;
+}
+
+.gallery li:hover, 
+.gallery li:focus {
+    transform: scale(1.1);
+    transition: 1s;
+}
