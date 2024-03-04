@@ -64,46 +64,51 @@ const images = [
   },
 ];
 
-const listOfImages = document.querySelector(".gallery");
+const listOfImages = document.querySelector(".gallery")
 
-listOfImages.addEventListener("click", onListClick);
+function createMarkup(image){
+  return`<li class="gallery-item">
+    <a class="gallery-link" href="${image.original}">
+      <img
+      width = "360"
+      height = "200"
+        class="gallery-image"
+        src="${image.preview}"
+        data-source="${image.original}"
+        alt="${image.description}"
+      />
+    </a>
+  </li>`
+}  
 
-function onListClick(e) {
-    e.preventDefault();
-    if (e.target === e.currentTarget) return;
-
-    const instance = basicLightbox.create(`
-    <div class="modal">
-      <img scr="${e.target.dataset.source}" alt="${e.target.alt}"/>
-    </div>`);
-
-    instance.show();
+function rendering(array){
+listOfImages.innerHTML = array.map(createMarkup).join("")
 }
 
-function imageTemplate(imgObj) {
-    return `
-    <li class="gallery-item">
-  <a class="gallery-link" href="${imgObj.original}">
-    <img
-      width="360"
-      height="200"
-      class="gallery-image"
-      src="${imgObj.preview}"
-      data-source="${imgObj.original}"
-      alt="${imgObj.description}"
-    />
-  </a>
-</li>
-`;
-}
+rendering(images)
 
-function imagesTemplate(array) {
-    return array.map(imageTemplate).join('');
-}
+listOfImages.addEventListener("click", event => {
+  event.preventDefault()
+  if(event.target === event.currentTarget){return}
+  if(!event.target.closest("img").classList.contains("gallery-image")){return}
+  
+  const img = event.target.closest("img")
+  const alt = img.getAttribute("alt")
+  const objekt = images.find(item => item.description === alt)
 
-function render(array) {
-    const markup = imagesTemplate(array);
-    listOfImages.innerHTML = markup;
-}
 
-render(images);
+  const modal = basicLightbox.create(`
+ <img src = "${objekt.original}" alt = "${objekt.description}"/>
+ `,
+)
+
+window.addEventListener("keydown", closeUp)
+
+modal.show()
+
+function closeUp(event){
+if(event.code!=="Escape") return;
+modal.close()
+window.removeEventListener("keydown", closeUp)
+}
+})
