@@ -94,11 +94,11 @@ listOfImages.addEventListener("click", event => {
   
   const img = event.target.closest("img")
   const alt = img.getAttribute("alt")
-  const objekt = images.find(item => item.description === alt)
+  const obj = images.find(item => item.description === alt)
 
 
   const modal = basicLightbox.create(`
- <img src = "${objekt.original}" alt = "${objekt.description}"/>
+ <img src = "${obj.original}" alt = "${obj.description}"/>
  `,
 )
 
